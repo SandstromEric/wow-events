@@ -1,0 +1,107 @@
+<div class="container">
+    <div>
+        <div>
+            <mat-card>
+                <mat-card-title>{{booking?.name}}</mat-card-title>
+                <mat-card-content>
+                    <!--ADD OWNER PREV-->
+                    <ckeditor #description [editor]="Editor" (blur)="setDescription()" [formControl]="descControl">
+                    </ckeditor>
+                </mat-card-content>
+            </mat-card>
+            <!-- <app-event-detail></app-event-detail> -->
+        </div>
+        <div class="times">
+            <mat-card *ngFor="let item of times">
+                <mat-card-title>
+                    <div>
+                        <span>
+                            {{item.time}}
+                        </span>
+                        <button mat-icon-button *ngIf="isAdmin">
+                            <mat-icon>note_add</mat-icon>
+                        </button>
+                        <button mat-icon-button #bookBtn="mdePopoverTrigger" [mdePopoverTriggerFor]="bookPopover"
+                            *ngIf="!ipFound" [mdePopoverTriggerOn]="'click'">
+                            <mat-icon>add_shopping_cart</mat-icon>
+                        </button>
+                        <mde-popover #bookPopover="mdePopover" [mdePopoverCloseOnClick]="false"
+                            [mdePopoverPositionX]="'before'" [mdePopoverPositionY]="'below'">
+                            <mat-card>
+                                <mat-card-content [formGroup]="bookGroup">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput type="text" formControlName="name">
+                                    </mat-form-field>
+                                    <br />
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Service</mat-label>
+                                        <mat-select #service formControlName="service">
+                                            <mat-option [value]="service" *ngFor="let service of services$ | async">
+                                                {{service.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </mat-card-content>
+                                <mat-card-actions align="end">
+                                    <button mat-flat-button color="primary" [disabled]="bookGroup.invalid"
+                                        (click)="bookTime(item);">
+                                        Book
+                                    </button>
+                                </mat-card-actions>
+                            </mat-card>
+                        </mde-popover>
+                    </div>
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-divider></mat-divider>
+                    <mat-list dense>
+                        <ng-container *ngFor="let time of item.children">
+                            <mat-list-item *ngIf="time.occupied">
+                                <mat-icon mat-list-icon>event_busy</mat-icon>
+                                <span mat-line>{{time.name}}</span>
+                                <code>{{time.service.shortCode | uppercase}}({{time.service.gold}}g)</code>
+                                <button mat-icon-button color="primary" [cdkCopyToClipboard]="'/invite ' + time.name"
+                                    (cdkCopyToClipboardCopied)="openSnackbar()">
+                                    <mat-icon class="icon-small" matTooltip="Copy invite to clipboard">
+                                        content_copy
+                                    </mat-icon>
+                                </button>
+                                <button mat-icon-button color="primary" [matMenuTriggerFor]="bookedOptions">
+                                    <mat-icon class="icon-small">more_vert</mat-icon>
+                                </button>
+                                <mat-menu #bookedOptions="matMenu" [overlapTrigger]="true" [xPosition]="'before'"
+                                    [yPosition]="'below'">
+                                    <button mat-menu-item (click)="unbookTime(time)">
+                                        <mat-icon>unarchive</mat-icon>
+                                        <span>Unbook</span>
+                                    </button>
+                                    <button mat-menu-item disabled>
+                                        <mat-icon color="warn">gavel</mat-icon>
+                                        <span>Ban</span>
+                                    </button>
+                                </mat-menu>
+                            </mat-list-item>
+                            <mat-list-item *ngIf="!time.occupied">
+                                <mat-icon mat-list-icon>event_available</mat-icon>
+                                <span mat-line>Available</span>
+                            </mat-list-item>
+                        </ng-container>
+                    </mat-list>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<div class="actions mat-elevation-z4" *ngIf="true">
+    <button mat-flat-button color="warn" disabled>
+        Archive Event
+    </button>
+    <button mat-flat-button color="primary" disabled>
+        Add New Time
+    </button>
+</div>
+
+<ng-template #Loading>
+    <app-loader></app-loader>
+</ng-template>

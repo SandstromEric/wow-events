@@ -1,0 +1,33 @@
+<mat-card>
+    <mat-card-title>Your Events</mat-card-title>
+    <mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-table [dataSource]="dataSource" *ngIf="!loading; else Loading">
+            <!-- Position Column -->
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="time">
+                <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.fromTime}} - {{element.toTime}} </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="raids">
+                <mat-header-cell *matHeaderCellDef> Raids </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.raids}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row matRipple *matRowDef="let row; columns: displayedColumns;" (click)="navigateToEvent(row)">
+            </mat-row>
+        </mat-table>
+    </mat-card-content>
+</mat-card>
+
+<ng-template #Loading>
+    <app-loader [diamater]="50"></app-loader>
+</ng-template>

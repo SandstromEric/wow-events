@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "phase-wow": {
+      "hosting": {
+        "wow-wishlist": [
+          "phase-wow"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "phase-wow"
+  }
+}

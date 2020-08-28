@@ -1,0 +1,35 @@
+:host {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+}
+
+.container {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+
+    > div {
+        display: grid;
+        grid-template-columns: 1fr 250px;
+        gap: 1rem;
+    }
+
+    .mat-card {
+        padding: 0;
+
+        .mat-card-title {
+            padding: 1rem;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.actions {
+    padding: .5rem;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    z-index: 999;
+}

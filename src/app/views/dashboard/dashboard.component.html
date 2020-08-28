@@ -1,0 +1,16 @@
+<div class="container">
+    <mat-card>
+        <mat-card-title>Welcome to Pugster!</mat-card-title>
+        <mat-card-content>
+            Here you can create custom pugs for World of Warcraft Classic! <br />
+            Custom created pugs will allow you to manage soft and hard reserved items in a more controlled environment.
+            <br />
+            This will create a better experiance for both the PUG host and the players participating in the event.
+            <br />
+            In order to create an event you will have to create an account.
+        </mat-card-content>
+    </mat-card>
+    <ng-container *ngIf="authService.user$ | async">
+        <app-my-event-list></app-my-event-list>
+    </ng-container>
+</div>

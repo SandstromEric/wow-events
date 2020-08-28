@@ -1,0 +1,17 @@
+.mat-card {
+    padding: 0;
+
+    .mat-card-title {
+        padding: 1rem;
+        margin-bottom: 0;
+    }
+}
+
+.mat-row {
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+
+    &:hover {
+        background: rgba(0,0,0,.125);
+    }
+}

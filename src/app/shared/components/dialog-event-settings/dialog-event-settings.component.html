@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>
+    Event Settings
+</h1>
+
+<mat-dialog-content [formGroup]="form">
+    <mat-checkbox formControlName="public">
+        <span>
+            Public
+        </span>
+        <mat-icon class="icon-small" matTooltip="Event will be visible through the Browse Events feature">
+            help
+        </mat-icon>
+    </mat-checkbox>
+    <mat-checkbox formControlName="public">
+        <span>
+            Allow Edit
+        </span>
+        <mat-icon class="icon-small" matTooltip="Allow users to add reserves">
+            help
+        </mat-icon>
+    </mat-checkbox>
+    <mat-divider></mat-divider>
+    <div mat-subheader>Features</div>
+    <mat-selection-list #features>
+        <mat-list-option value="softres">Soft Reserve System</mat-list-option>
+        <mat-list-option value="hardres">Hard Reserve System</mat-list-option>
+        <mat-list-option value="roster" disabled>Roster System (In Development)</mat-list-option>
+    </mat-selection-list>
+    <mat-divider></mat-divider>
+    <div mat-subheader>Owners</div>
+    <em style="padding: 0 1rem">In Development</em>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-flat-button color="warn" (click)="deleteEvent()">Delete</button>
+    <button mat-flat-button color="primary" (click)="update()">Update</button>
+</mat-dialog-actions>

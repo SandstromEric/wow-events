@@ -1,0 +1,12 @@
+<mat-form-field>
+    <mat-label>Import Character Armory</mat-label>
+    <textarea matInput [formControl]="armoryControl"></textarea>
+</mat-form-field>
+<button mat-flat-button (click)="importArmory()">
+    Import
+</button>
+
+<div *ngIf="authService.user$ | async as user">
+    <a href="#" [attr.data-wowhead]="'item='+ user?.armory?.head +'&classic'" [attr.data-wh-icon-size]="'small'"
+        [attr.data-wh-rename-link]="true">head</a>
+</div>

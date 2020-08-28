@@ -1,0 +1,76 @@
+<div class="container" *ngIf="authService.user$ | async; else Loading">
+    <div>
+        <div style="padding-bottom: 1rem;">
+            <app-my-event-list></app-my-event-list>
+
+            <!-- <div class="calendar mat-elevation-z4">
+                    <div class="month">
+                        <div class="prev">
+                            <button mat-icon-button (click)="prevMonth()">
+                                <mat-icon>chevron_left</mat-icon>
+                            </button>
+                        </div>
+                        <div class="name">{{date | date:'MMMM, yyyy'}}</div>
+                        <div class="next">
+                            <button mat-icon-button (click)="nextMonth()">
+                                <mat-icon>chevron_right</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="weekdays">
+                        <div>M</div>
+                        <div>T</div>
+                        <div>W</div>
+                        <div>T</div>
+                        <div>F</div>
+                        <div>S</div>
+                        <div>S</div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="days">
+                        <div *ngFor="let day of days; let i = index" (click)="selectedDate = day"
+                            [ngStyle]="{'grid-column-start': i === 0 ? startIndex : null }">
+                            <ng-container *ngIf="!occupied(day)">
+                                <button mat-icon-button *ngIf="selectedDate.getTime() !== day.getTime()">
+                                    {{i + 1}}
+                                </button>
+                                <button mat-mini-fab *ngIf="selectedDate.getTime() === day.getTime()" color="accent">
+                                    {{i + 1}}
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="occupied(day) as event">
+                                <button mat-mini-fab color="primary" *ngIf="selectedDate.getTime() !== day.getTime()"
+                                    [routerLink]="['/events', event.id]" (click)="selectEvent(event)">
+                                    {{i + 1}}
+                                </button>
+                                <button mat-mini-fab *ngIf="selectedDate.getTime() === day.getTime()" color="accent">
+                                    {{i + 1}}
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div> -->
+        </div>
+        <div>
+            <mat-card>
+                <mat-card-title>Browse Events</mat-card-title>
+                <mat-card-content>
+                    <em>In Development</em>
+                </mat-card-content>
+            </mat-card>
+            <!-- <app-event-detail></app-event-detail> -->
+        </div>
+    </div>
+
+</div>
+<mat-divider></mat-divider>
+<div class=" actions mat-elevation-z4" *ngIf="true">
+    <button mat-flat-button color="accent" (click)="createEvent()">
+        Create Event
+    </button>
+</div>
+
+<ng-template #Loading>
+    <app-loader></app-loader>
+</ng-template>

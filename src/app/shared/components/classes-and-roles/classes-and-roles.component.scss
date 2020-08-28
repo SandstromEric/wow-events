@@ -1,0 +1,15 @@
+.class-chip {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 24px;
+    align-items: center;
+
+    .mat-chip-remove {
+        margin-left: 0px; 
+        margin-right: 0;
+    }
+}
+
+.mat-standard-chip {
+    padding: 7px 5px;
+}

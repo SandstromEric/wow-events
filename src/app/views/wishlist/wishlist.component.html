@@ -1,0 +1,149 @@
+<div>
+    <mat-card class="form mat-elevation-z2" [formGroup]="form">
+        <div class="field">
+            <a [attr.data-wowhead]="'item='+currentItem?.id+'&domain=classic'">
+                <img [src]="currentItem?.icon" alt="">
+            </a>
+            <mat-form-field floatLabel="always">
+                <mat-label>Add Wishlist item</mat-label>
+                <input matInput type="text" placeholder="e.g. classic.wowhead.com/item=19019" autocomplete="off"
+                    formControlName="wowhead">
+            </mat-form-field>
+        </div>
+        <ng-container *ngIf="currentItem">
+            <div class="meta-data">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" disabled [value]="currentItem.name">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Raid</mat-label>
+                    <mat-select formControlName="raid">
+                        <mat-option value="Molten Core">Molten Core</mat-option>
+                        <mat-option value="Onyxia's Lair">Onyxia's Lair</mat-option>
+                        <mat-option value="Blackwing Lair">Blackwing Lair</mat-option>
+                        <mat-option value="Zul'Gurub">Zul'Gurub</mat-option>
+                        <mat-option value="Temple of Ahn'Qiraj (20)">Temple of Ahn'Qiraj (20)</mat-option>
+                        <mat-option value="Temple of Ahn'Qiraj (40)">Temple of Ahn'Qiraj (40)</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="classes-and-roles">
+                <mat-form-field floatLabel="always">
+                    <mat-label>Class</mat-label>
+                    <mat-select [formControl]="classControl" placeholder="Pick a class">
+                        <ng-container *ngFor="let class of classList">
+                            <mat-option [value]="class.name" *ngIf="!classAdded(class.name)">
+                                <div class="class">
+                                    <class-icon [icon]="class.name" type="class"></class-icon>
+                                    <span>
+                                        {{class.name}}
+                                    </span>
+                                </div>
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field floatLabel="always">
+                    <mat-label>Roles</mat-label>
+                    <mat-select multiple [formControl]="roleControl" placeholder="Pick a role">
+                        <ng-container *ngFor="let role of roleList">
+                            <mat-option [value]="role.name" *ngIf="role.classes.includes(classControl.value)">
+                                <div class="class">
+                                    <class-icon [icon]="role.name" type="role"></class-icon>
+                                    <span>
+                                        {{role.name}}
+                                    </span>
+                                </div>
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-icon-button (click)="addClassAndRole()"
+                    [disabled]="classControl.invalid || roleControl.invalid">
+                    <mat-icon>add_circle</mat-icon>
+                </button>
+                <div class="class-list">
+                    <ng-container *ngIf="array.value.length">
+                        <mat-chip-list>
+                            <mat-chip *ngFor="let class of array.controls; let i = index;"
+                                [ngStyle]="{'background-color': 'var(--'+ class.value.class +')'}">
+                                <div class="class-chip">
+                                    <div>
+                                        <class-icon [icon]="class.value.class" type="class"
+                                            style="margin-right: .5rem;">
+                                        </class-icon>
+                                        <class-icon *ngFor="let role of class.value.roles" [icon]="role" type="role">
+                                        </class-icon>
+                                    </div>
+                                    <mat-icon matChipRemove (click)="removeClass(i)">cancel</mat-icon>
+                                </div>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </ng-container>
+                    <ng-container *ngIf="!array.value.length">
+                        Please add classes to continue...
+                    </ng-container>
+                </div>
+            </div>
+            <mat-form-field floatLabel="always" class="notes">
+                <mat-label>Additional Notes</mat-label>
+                <textarea matInput formControlName="notes"
+                    placeholder="Write more specific here. e.g. class/spec priority etc."></textarea>
+            </mat-form-field>
+        </ng-container>
+        <mat-checkbox>Set as your wishlist item</mat-checkbox>
+        <button mat-flat-button [disabled]="form.invalid" color="primary" (click)="addItem()">Add item</button>
+    </mat-card>
+</div>
+
+<div class="table-container mat-elevation-z2">
+    <mat-form-field floatLabel="always">
+        <mat-label>Filter</mat-label>
+        <input matInput type="text" placeholder="Filter items" autocomplete="off" [formControl]="filterControl">
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="icon">
+            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <a [attr.data-wowhead]="'item='+element?.id+'&domain=classic'">
+                    <img [src]="element?.icon" alt="">
+                </a>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngStyle]="{'color': 'var(--'+element.quality.type+')'}">
+                <a [attr.data-wowhead]="'item='+element?.id+'&domain=classic'">
+                    [{{element.name}}]
+                </a>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="raid">
+            <mat-header-cell *matHeaderCellDef> Raid </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.raid}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="availableFor">
+            <mat-header-cell *matHeaderCellDef> Classes & Roles</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <classes-and-roles [list]="element.availableFor"></classes-and-roles>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="external">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <a mat-icon-button [href]="element.wowhead" target="_blank">
+                    <mat-icon>open_in_new</mat-icon>
+                </a>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>

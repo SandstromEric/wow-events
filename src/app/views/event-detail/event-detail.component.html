@@ -1,0 +1,113 @@
+<ng-container *ngIf="!loading; else Loading">
+    <ng-container *ngIf="event;">
+        <div class="event">
+            <mat-card class="info">
+                <mat-card-title>{{event.name}}</mat-card-title>
+                <mat-card-subtitle>{{event.raids}} ({{event.fromTime}} - {{event.toTime}})</mat-card-subtitle>
+                <mat-card-content>
+                    <p>
+                        {{event.notes}}
+                    </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-flat-button color="accent" (click)="openSettings()">
+                        Settings
+                        <mat-icon>settings</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+            <mat-card class="roster" *ngIf="ifFeature('roster')">
+                <mat-card-title>Roster</mat-card-title>
+                <mat-card-content>
+                    No Current Players
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-flat-button color="accent" [mdePopoverTriggerFor]="addPlayer"
+                        [mdePopoverTriggerOn]="'click'">Add Player</button>
+                    <mde-popover #addPlayer="mdePopover" [mdePopoverCloseOnClick]="false">
+                        <mat-card>
+                            <ais-instantsearch [config]="config">
+                                <ais-search-box></ais-search-box>
+                                <ais-hits>
+                                    <ng-template let-hits="hits" let-results="results">
+                                        <div *ngIf="hits.length === 0">
+                                            No results found matching <strong>{{results.query}}</strong>.
+                                        </div>
+
+                                        <div *ngIf="results.query">
+                                            <div *ngFor="let hit of hits" class="content">
+                                                <img [src]="'assets/class_icons/'+hit.class+'.png'" width="24"
+                                                    height="24">
+                                                <section>
+                                                    <h3>{{hit.name}}</h3>
+                                                    <ais-highlight attribute="bio" [hit]="hit"></ais-highlight>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </ais-hits>
+                            </ais-instantsearch>
+                            <br>
+                            <mat-divider></mat-divider>
+                            <div style="position: relative; top: 15px;" [formGroup]="addCharForm">
+                                <mat-form-field>
+                                    <mat-label>Character Name</mat-label>
+                                    <input matInput type="text" formControlName="name">
+                                </mat-form-field>
+
+                                <mat-form-field>
+                                    <mat-label>Class</mat-label>
+                                    <mat-select placeholder="Pick a class" formControlName="class">
+                                        <ng-container *ngFor="let class of classList">
+                                            <mat-option [value]="class.name">
+                                                <div class="class">
+                                                    <class-icon [icon]="class.name" type="class"></class-icon>
+                                                    <span>
+                                                        {{class.name}}
+                                                    </span>
+                                                </div>
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <mat-card-actions align="end">
+                                <button mat-flat-button color="accent" (click)="addCharacter()"
+                                    [disabled]="addCharForm.invalid">Add Character</button>
+                            </mat-card-actions>
+                        </mat-card>
+                    </mde-popover>
+                </mat-card-actions>
+            </mat-card>
+            <mat-card class="hard-res" *ngIf="ifFeature('hardres')">
+                <mat-card-title>Hard Reserves</mat-card-title>
+                <mat-card-content>
+                    No Current Reserves
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-flat-button color="accent">Add Reserve</button>
+                </mat-card-actions>
+            </mat-card>
+            <mat-card class="soft-res" *ngIf="ifFeature('softres')">
+                <mat-card-title>Soft Reserves</mat-card-title>
+                <mat-card-content>
+                    No Current Reserves
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-flat-button color="accent">Add Reserve</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </ng-container>
+</ng-container>
+<ng-container *ngIf="event === undefined">
+    <div style="padding: 1rem; display: grid; justify-content: center;">
+        <h2>404 - Event not Found</h2>
+        <a routerLink="/event/list" style="text-align: center; line-height: 24px;">
+            <mat-icon>keyboard_backspace</mat-icon> Go back to events
+        </a>
+    </div>
+</ng-container>
+<ng-template #Loading>
+    <mat-spinner></mat-spinner>
+</ng-template>

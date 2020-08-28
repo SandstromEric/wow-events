@@ -1,0 +1,21 @@
+.mat-dialog-content {
+
+    > div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 1rem;
+    }
+}
+
+.service-container {
+    max-width: 300px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1rem;
+
+    &::ng-deep {
+        .mat-form-field-infix {
+            width: 100%;
+        }
+    }
+}

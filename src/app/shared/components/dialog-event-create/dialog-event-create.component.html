@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>
+    Create new event
+</h1>
+<mat-dialog-content>
+    <div class="form" [formGroup]="formGroup">
+        <mat-form-field style="grid-column: span 2">
+            <mat-label>Event Name</mat-label>
+            <input matInput formControlName="name" />
+        </mat-form-field>
+        <mat-form-field style="grid-column: span 2">
+            <mat-label>Raids</mat-label>
+            <mat-select multiple formControlName="raids">
+                <mat-option value="Molten Core">Molten Core</mat-option>
+                <mat-option value="Onyxia's Lair">Onyxia's Lair</mat-option>
+                <mat-option value="Blackwing Lair">Blackwing Lair</mat-option>
+                <mat-option value="Zul'Gurub">Zul'Gurub</mat-option>
+                <mat-option value="Temple of Ahn'Qiraj (20)">Temple of Ahn'Qiraj (20)</mat-option>
+                <mat-option value="Temple of Ahn'Qiraj (40)">Temple of Ahn'Qiraj (40)</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>From</mat-label>
+            <input matInput [format]="24" [ngxTimepicker]="from" formControlName="fromTime">
+            <ngx-material-timepicker #from></ngx-material-timepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>To</mat-label>
+            <input matInput [format]="24" [ngxTimepicker]="to" formControlName="toTime">
+            <ngx-material-timepicker #to></ngx-material-timepicker>
+        </mat-form-field>
+        <mat-form-field style="grid-column: span 2">
+            <mat-label>Additional Notes</mat-label>
+            <textarea matInput formControlName="notes"></textarea>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" [disabled]="formGroup.invalid" (click)="create()">Create</button>
+</mat-dialog-actions>

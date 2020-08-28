@@ -1,0 +1,26 @@
+.event {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    grid-template-areas: 'info hard soft' 'roster roster roster';
+}
+
+.content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: center;
+    img {
+        border-radius: 50%;
+    }
+
+    h3 {
+        margin-bottom: 0;
+    }
+}
+
+.info { grid-area: info }
+.roster { grid-area: roster }
+.hard-res { grid-area: hard }
+.soft-res { grid-area: soft }

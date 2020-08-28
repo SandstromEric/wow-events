@@ -1,0 +1,13 @@
+<mat-chip-list>
+    <mat-chip *ngFor="let class of list; let i = index;"
+        [ngStyle]="{'background-color': 'var(--'+ class.class +')', 'border': class.class === 'Priest' ? '1px solid #000' : 'none'}">
+        <div class="class-chip">
+            <div>
+                <class-icon [icon]="class?.class" type="class" style="margin-right: .5rem;">
+                </class-icon>
+                <class-icon *ngFor="let role of class.roles" [icon]="role" type="role">
+                </class-icon>
+            </div>
+        </div>
+    </mat-chip>
+</mat-chip-list>

@@ -1,0 +1,59 @@
+$height: 48px;
+$width: 48px;
+
+:host {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+}
+.container {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+.calendar {
+    //border: 1px solid #aaa;
+    width: $width * 7;
+    border-radius: 3px;
+
+    .month {
+        display: grid;
+        grid-template-columns: 40px 1fr 40px;
+
+        .name {
+            justify-self: center;
+            align-self: center;
+        }
+    }
+    
+    .weekdays {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, $width);
+
+        div {
+            height: $height;
+            width: $width;
+            font-weight: bold;
+            text-align: center;
+            line-height: $height;
+        }
+    }
+
+    .days {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, $width);
+
+        div {
+            height: $height;
+            width: $width;
+            font-weight: bold;
+            text-align: center;
+            line-height: $height;
+        }
+    }
+}
+
+.actions {
+    padding: .5rem;
+}
